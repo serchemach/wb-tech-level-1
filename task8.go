@@ -33,7 +33,7 @@ func main() {
 	}
 
 	fmt.Printf("The initial number is: %d, or in bit form:\n", number)
-	numberStr := fmt.Sprintf("%b", number)
+	numberStr := fmt.Sprintf("%064b", uint64(number))
 	fmt.Println(numberStr)
 
 	arrowString := strings.Repeat(" ", len(numberStr))
@@ -45,6 +45,6 @@ func main() {
 	fmt.Printf("Bit add mask: %b\n", int64(bitVal)<<int64(bitInd))
 	number = previousBit ^ number ^ (int64(bitVal) << int64(bitInd))
 	fmt.Printf("Number after setting the bit is: %d, or in bit form:\n", number)
-	fmt.Printf("%b\n", number)
+	fmt.Printf("%063b\n", uint64(number))
 	fmt.Println(arrowString)
 }
