@@ -41,8 +41,8 @@ func main() {
 	fmt.Println(arrowString)
 
 	previousBit := number & (1 << bitInd)
-	fmt.Printf("Bit mask: %b\n", previousBit)
-	fmt.Printf("Bit add mask: %b\n", int64(bitVal)<<int64(bitInd))
+	fmt.Printf("Bit mask: %b\n", uint64(previousBit))
+	fmt.Printf("Bit add mask: %b\n", uint64(bitVal)<<uint64(bitInd))
 	number = previousBit ^ number ^ (int64(bitVal) << int64(bitInd))
 	fmt.Printf("Number after setting the bit is: %d, or in bit form:\n", number)
 	fmt.Printf("%063b\n", uint64(number))
