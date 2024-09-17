@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"sync"
+	"sync/atomic"
 	"syscall"
 )
 
@@ -35,14 +36,15 @@ func main() {
 
 	sigChannel := make(chan os.Signal)
 	signal.Notify(sigChannel, os.Interrupt, syscall.SIGTERM)
-	isEnd := false
+	// Присвоение значение к обычному булу не атомарно
+	var isEnd atomic.Bool
 
 	go func() {
 		<-sigChannel
-		isEnd = true
+		isEnd.Store(true)
 	}()
 
-	for !isEnd {
+	for !isEnd.Load() {
 		newVal := rand.Intn(2000)
 		valChannel <- newVal
 	}
@@ -50,7 +52,7 @@ func main() {
 	fmt.Println("We got a sigterm")
 	close(valChannel)
 
-	// Wait until all goroutines are closed
+	// Ждём пока все горутины закроются
 	wg.Wait()
 	fmt.Println("We ended stuff")
 }
