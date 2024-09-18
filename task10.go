@@ -27,11 +27,20 @@ func aggregateTemps(temps []float64) (result map[int][]float64) {
 
 		vals, ok := result[bottomDecade]
 		if !ok {
+			// Даём больше capacity чтобы не выделять заново память каждый раз
 			result[bottomDecade] = make([]float64, 1, len(temps))
 			result[bottomDecade][0] = val
 			continue
 		}
 		result[bottomDecade] = append(vals, val)
+	}
+
+	// Режем ненужный capacity
+	for key, _ := range result {
+		temp := make([]float64, len(result[key]))
+		copy(temp, result[key])
+		// fmt.Printf("Previous cap: %d, New cap: %d\n", cap(result[key]), cap(temp))
+		result[key] = temp
 	}
 
 	return
